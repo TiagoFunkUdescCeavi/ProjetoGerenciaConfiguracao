@@ -7,8 +7,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
 app.get('/', (req, res) => {
-    res.send('Ok');
+    res.send('ok');
 });
+
+require('./controller/productController')(app);
 
 app.listen(3000);  
 
