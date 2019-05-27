@@ -4,7 +4,11 @@ const mongoose = require('../database');
 const router = express.Router();
 
 router.post('/register', async(req, res) => {
-    try{
+    const {description} = req.body;
+
+    if (!description)
+        return res.status(400).send({error: "The product need a description"});
+    try{        
         const product = await Product.create(req.body);
         return res.send(product);
     }catch(err){
