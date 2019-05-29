@@ -6,11 +6,15 @@
       </v-btn>
 
       <v-btn icon href="/product">
-        <v-icon>add_shopping_cart</v-icon>
+        <v-icon>dashboard</v-icon>
       </v-btn>
       
       <v-spacer></v-spacer>          
       
+      <v-btn icon>
+        <v-icon>shopping_cart</v-icon>
+      </v-btn>
+
       <v-toolbar-title class="white--text-uppercase">        
         Info Store   
       </v-toolbar-title>

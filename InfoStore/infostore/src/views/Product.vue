@@ -1,11 +1,11 @@
 <template>
   <v-container class="ma-1">
     <h1>Cadastro de produto</h1>
-    <v-flex xs12 sm6 md2>
-      <v-text-field label="Descrição" v-model="descricao" :rules="regrasDescricao" required></v-text-field>
+    <v-flex xs12 sm6 md3>
+      <v-text-field label="Descrição" v-model="descricao"></v-text-field>
     </v-flex>
-    <v-flex xs12 sm6 md2>
-      <v-text-field label="Fabricante" v-model="fabricante" :rules="regrasFabricante" required></v-text-field>
+    <v-flex xs12 sm6 md3>
+      <v-text-field label="Fabricante" v-model="fabricante"></v-text-field>
     </v-flex>
     <v-layout align-center>
         <v-btn dark @click="submit">
@@ -41,15 +41,7 @@ export default {
     data() {
         return {
             descricao: "",
-            regrasDescricao: [
-                    (v) => !!v || 'Descrição é Obrigatório',
-                    (v) => v.length >= 10 || 'Descrição deve ter pelo menos 10 caracteres'
-                ],
             fabricante: "",
-            regrasFabricante: [
-                    (v) => !!v || 'Fabricante é obrigatótio',
-                    (v) => v.length >= 2 || 'Fabricante deve ter pelo menos 2 caracteres'
-                ],
             snackbar: false,
             text: ""    
         };
@@ -67,8 +59,7 @@ export default {
 
             data = JSON.stringify( data );
 
-            var vm = this;
-
+            var vm = this;                         
             fetch("http://localhost:3000/product/register", {
                 headers: {
                     'accept': 'application/json',
@@ -90,7 +81,7 @@ export default {
                 vm.text = error;
                 vm.snackbar = true;
                 vm.clean();
-            });
+            });            
         }
     }
 };
