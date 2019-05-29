@@ -3,7 +3,7 @@ const Product = require('../model/product');
 const mongoose = require('../database');
 const router = express.Router();
 
-router.post('/register', async(req, res) => {
+router.post('/', async(req, res) => {
     const {description} = req.body;
 
     if (!description)
@@ -27,7 +27,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.put("/update",async function(req,res){
+router.put("/",async function(req,res){
   const finded = await Product.findByIdAndUpdate( req.body._id, {
     $set: {
       description: req.body.description,
@@ -37,7 +37,7 @@ router.put("/update",async function(req,res){
   res.send( finded );
 });
 
-router.delete("/delete", async function(req,res){
+router.delete("/", async function(req,res){
   const finded = await Product.findByIdAndRemove( req.body._id );
   res.send({status:"sucess"});
 })
