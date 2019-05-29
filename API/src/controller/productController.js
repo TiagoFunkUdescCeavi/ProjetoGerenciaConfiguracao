@@ -37,4 +37,9 @@ router.put("/update",async function(req,res){
   res.send( finded );
 });
 
+router.delete("/delete", async function(req,res){
+  const finded = await Product.findByIdAndRemove( req.body._id );
+  res.send({status:"sucess"});
+})
+
 module.exports = app => app.use('/product', router);
