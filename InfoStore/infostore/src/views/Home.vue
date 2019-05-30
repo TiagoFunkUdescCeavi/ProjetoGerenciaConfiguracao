@@ -26,7 +26,10 @@
         <tr>          
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
-          <td>
+          <td class="text-xs-center">
+            <v-btn icon>
+              <v-icon>edit</v-icon>
+            </v-btn>
             <v-btn icon>
               <v-icon>delete</v-icon>
             </v-btn>
@@ -56,9 +59,10 @@ export default {
             value: 'manufacturer' 
           },
           {
-            text: 'Excluir',
+            text: 'Opções',
             value: '_id',
-            sortable: false
+            sortable: false,
+            align: 'center'            
           }          
         ],
       products: []
@@ -69,8 +73,6 @@ export default {
   },
   methods: {
     closeProductScreen(ProductRegistered) {
-      console.log(ProductRegistered);
-      
       if (ProductRegistered)
         this.fetchProducts();
     },
