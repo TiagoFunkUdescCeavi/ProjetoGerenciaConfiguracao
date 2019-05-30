@@ -1,20 +1,27 @@
 <template>
-  <v-container class="ma-1">
-    <h1>Cadastro de produto</h1>
-    <v-flex xs12 sm6 md3>
-      <v-text-field label="Descrição" v-model="descricao"></v-text-field>
-    </v-flex>
-    <v-flex xs12 sm6 md3>
-      <v-text-field label="Fabricante" v-model="fabricante"></v-text-field>
-    </v-flex>
-    <v-layout align-center>
-        <v-btn dark @click="submit">
-            <v-icon left>done</v-icon>
-            <span>Cadastrar</span>
-        </v-btn>
-        <v-btn dark @click="clean">Limpar</v-btn>   
-    </v-layout>
-    
+    <v-card>    
+        <v-card-title>
+          <span class="headline">Cadastro de Produto</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>              
+              <v-flex xs12>
+                <v-text-field label="Descrição*" v-model="descricao" required></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field label="Fabricante*" v-model="fabricante" required></v-text-field>
+              </v-flex>              
+              
+            </v-layout>
+          </v-container>
+          <small>*Indica campos obrigatórios</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="submit">Salvar</v-btn>
+          <v-btn color="blue darken-1" flat>Fechar</v-btn>
+        </v-card-actions>
     <v-snackbar
       v-model="snackbar" 
       :bottom="false"
@@ -33,7 +40,7 @@
         Close
       </v-btn>
     </v-snackbar>
-  </v-container>  
+  </v-card>  
 </template>
 
 <script>
@@ -59,8 +66,9 @@ export default {
 
             data = JSON.stringify( data );
 
-            var vm = this;                         
-            fetch("http://localhost:3000/product/register", {
+            var vm = this;                
+            console.log(data);
+            fetch("http://localhost:3000/product/", {
                 headers: {
                     'accept': 'application/json',
                     'Content-Type': 'application/json'

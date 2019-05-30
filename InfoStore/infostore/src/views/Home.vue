@@ -1,31 +1,78 @@
 <template>
-  <div>
-    <h1>Produtos</h1>
-    <v-card flat class="pa-3" v-for="product in products" :key="product.description">
-      <v-layout row wrap>
-        <v-flex>
-          <div class="title">Descrição</div>
-          <div class="subheading mt-2">{{product.description}}</div>
-        </v-flex>
-        <v-flex>
-          <div class="title">Fabricante</div>
-          <div class="subheading mt-2">{{product.manufacturer}}</div>
-        </v-flex>
-      </v-layout>
-    </v-card>
-  </div>
+  <v-card>
+    <v-card-title>
+      <h1>Produtos</h1>
+      
+      <v-dialog v-model="dialog" persistent max-width="800">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </template> 
+        <v-card>
+          <productRegister></productRegister>
+        </v-card>
+      </v-dialog>        
+
+      <v-spacer></v-spacer>
+      
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    
+    <v-data-table
+      :headers="headers"
+      :items="products"
+      :search="search"
+      :pagination.sync="pagination"        
+      class="elevation-1"
+     >      
+      <template v-slot:items="props">
+        <tr>          
+          <td>{{props.item.description}}</td>
+          <td>{{props.item.manufacturer}}</td> 
+          <td>
+            <v-btn icon>
+              <v-icon>delete</v-icon>
+            </v-btn>
+          </td>       
+        </tr>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
+import productRegister from '../components/Product'
 export default {
   data() {
     return {
+      dialog: false,
+      pagination: {
+      rowsPerPage: 10
+      },
+      search: '',
+      headers: [
+          {
+            text: 'Descrição',
+            value: 'description'
+          },
+          { 
+            text: 'Fabricante', 
+            value: 'manufacturer' 
+          },
+          {
+            text: 'Excluir',
+            value: '_id',
+            sortable: false
+          }          
+        ],
       products: []
-    };
-  },
-  methods: {
-    sortBy(prop) {
-      this.products.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
     }
   },
   mounted() {
@@ -37,8 +84,11 @@ export default {
       })
       .catch(function(error) {
         console.error(error);
-      });
+      })
     // console.log(data);
-  }
-};
+  },
+  components: {
+        'productRegister': productRegister
+    }
+}
 </script>
