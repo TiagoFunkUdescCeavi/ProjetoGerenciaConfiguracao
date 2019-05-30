@@ -6,10 +6,12 @@
       </v-toolbar-title>  
 
       <v-spacer></v-spacer>          
-
-      <v-btn icon href="/">
-        <v-icon>home</v-icon>
-      </v-btn>
+      
+      <router-link :to="{ name: 'home' }">
+        <v-btn icon >
+          <v-icon>home</v-icon>
+        </v-btn>
+      </router-link>                
 
       <v-btn icon>
         <v-icon>shopping_cart</v-icon>

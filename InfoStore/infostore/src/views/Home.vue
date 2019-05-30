@@ -3,17 +3,7 @@
     <v-card-title>
       <h1>Produtos</h1>
       
-      <v-dialog v-model="dialog" persistent max-width="800">
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>add</v-icon>
-          </v-btn>
-        </template> 
-        <v-card>
-          <productRegister></productRegister>
-        </v-card>
-      </v-dialog>        
-
+      <productRegister v-on:OnCloseProductScreen="closeProductScreen"></productRegister>
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -52,7 +42,6 @@ import productRegister from '../components/Product'
 export default {
   data() {
     return {
-      dialog: false,
       pagination: {
       rowsPerPage: 10
       },
@@ -75,20 +64,26 @@ export default {
       products: []
     }
   },
-  mounted() {
-    fetch("http://localhost:3000/product/")
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        this.products = data;
-      })
-      .catch(function(error) {
-        console.error(error);
-      })
-    // console.log(data);
-  },
   components: {
         'productRegister': productRegister
+  },
+  methods: {
+    closeProductScreen(ProductRegistered) {
+      console.log(ProductRegistered);
+      
+      if (ProductRegistered)
+        this.fetchProducts();
+    },
+    fetchProducts(){
+      fetch("http://localhost:3000/product/").then(response => response.json()).then(data => {
+          this.products = data;
+        }).catch(function(error) {
+          console.error(error);
+        });    
     }
+  },  
+  mounted() {
+    this.fetchProducts();    
+  }  
 }
 </script>
