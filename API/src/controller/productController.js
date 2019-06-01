@@ -38,8 +38,12 @@ router.put("/",async function(req,res){
 });
 
 router.delete("/", async function(req,res){
+  console.log( req.body );
+  // var novoID = "ObjectId("+req.body._id+")";
+  // console.log( novoID );
   const finded = await Product.findByIdAndRemove( req.body._id );
-  res.send({status:"sucess"});
+  console.log( finded );
+  res.send(finded);
 })
 
 module.exports = app => app.use('/product', router);

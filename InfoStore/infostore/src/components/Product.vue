@@ -68,7 +68,7 @@ export default {
     methods: { 
         close() {
           this.dialog = false;
-          this.$emit("OnCloseProductScreen", this.registered);
+          this.$emit("meuEvento", this.registered);
         },
         clean() {
             this.descricao = "";
