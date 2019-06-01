@@ -3,7 +3,7 @@
     <v-card-title>
       <h1>Produtos</h1>
       
-      <productRegister v-on:OnCloseProductScreen="closeProductScreen"></productRegister>
+      <productRegister v-on:meuEvento="closeProductScreen"></productRegister>
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -31,7 +31,10 @@
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn icon>
-              <v-icon>delete</v-icon>
+              <v-icon 
+              @click="deleteProduct(props.item._id, props.item.description,props.item.manufacturer)">
+                delete
+              </v-icon>
             </v-btn>
           </td>       
         </tr>
@@ -46,7 +49,7 @@ export default {
   data() {
     return {
       pagination: {
-      rowsPerPage: 10
+        rowsPerPage: 10
       },
       search: '',
       headers: [
@@ -73,6 +76,7 @@ export default {
   },
   methods: {
     closeProductScreen(ProductRegistered) {
+      console.log( ProductRegistered );
       if (ProductRegistered)
         this.fetchProducts();
     },
@@ -82,10 +86,28 @@ export default {
         }).catch(function(error) {
           console.error(error);
         });    
+    },
+    deleteProduct(_id, description, manufacturer){
+      var data = {
+        "_id": _id,
+        "description": description,
+        "manufacturer": manufacturer
+      }
+      fetch("http://localhost:3000/product/", {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify( data )
+      }).then(function(response){
+        // console.error(response);
+      }).catch( function(error){
+        console.error(error);
+      });
+
+      this.fetchProducts();
     }
-  },  
+  },
   mounted() {
     this.fetchProducts();    
-  }  
+  }
 }
 </script>
