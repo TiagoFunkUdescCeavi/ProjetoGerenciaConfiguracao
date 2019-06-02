@@ -1,8 +1,10 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800">
     <template v-slot:activator="{ on }">
-      <v-btn icon v-on="on">
-        <v-icon>add</v-icon>
+      <v-btn icon 
+        v-on="on"
+        @click="iconClick">
+        <v-icon>{{iconName}}</v-icon>
       </v-btn>
     </template>    
     <v-card>    
@@ -53,59 +55,108 @@
 <script>
 export default {    
     data() {
-        return {
-            registered: false,
-            dialog: false,
-            descricao: "",
-            fabricante: "",
-            snackbar: false,
-            text: ""    
-        };
+      return {
+        registered: false,
+        dialog: false,
+        descricao: "",
+        fabricante: "",
+        snackbar: false,
+        text: "",
+        itemObject: this.item
+      };
     },
     mounted(){
       this.registered = false;
+    },
+    props:{
+      item: Object,
+      iconName: String
     },
     methods: { 
         close() {
           this.dialog = false;
           this.$emit("OnCloseProductScreen", this.registered);
+          this.registered = false;
         },
-        clean() {
-            this.descricao = "";
-            this.fabricante = "";                       
+        clean() {          
+          this.descricao = "";
+          this.fabricante = "";                       
         },     
-        submit() {
-            let data = {
-                "description": this.descricao,
-                "manufacturer":this.fabricante
-            };
+        iconClick() {
+          this.registered = false;
 
-            data = JSON.stringify( data );
-
-            var vm = this;                
-            console.log(data);
-            fetch("http://localhost:3000/product/", {
-                headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: data
-            }).then(function(response) {            
-                if (response.ok){
-                    vm.registered = true;
-                    vm.text = "Produto cadastrado com sucesso!";                
-                    vm.snackbar = true;                    
-                }else{
-                    vm.text = "Erro ao cadastrar um produto!";                
-                    vm.snackbar = true;
-                }
-                vm.clean();
-            }).catch(function(error) {            
-                vm.text = error;
+          if (this.itemObject){            
+            this.descricao = this.itemObject.description;
+            this.fabricante = this.itemObject.manufacturer;
+          }
+        },
+        updateItem(){
+          let data = {
+            "_id": this.itemObject._id,
+            "description": this.descricao,
+            "manufacturer": this.fabricante
+          }
+          data = JSON.stringify(data);          
+          var vm = this;
+          
+          fetch("http://localhost:3000/product/", {
+              headers: {
+                  'accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              method: "POST",
+              body: data
+          }).then(function(response) {                          
+              if (response.ok){       
+                vm.registered = true;
+                vm.text = "Produto alterado com sucesso!";
                 vm.snackbar = true;
-                vm.clean();
-            });            
+                vm.close();
+              }else{
+                vm.text = "Erro ao alterar um produto!";                
+                vm.snackbar = true;
+              }           
+          }).catch(function(error) {
+            vm.text = error;
+            vm.snackbar = true;
+          });            
+        },
+        saveItem(){
+          let data = {
+            "description": this.descricao,
+            "manufacturer": this.fabricante
+          };
+
+          data = JSON.stringify( data );
+          var vm = this;                
+
+          fetch("http://localhost:3000/product/", {
+              headers: {
+                  'accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              method: "PUT",
+              body: data
+          }).then(function(response) {            
+              if (response.ok){
+                  vm.registered = true;
+                  vm.text = "Produto cadastrado com sucesso!";                
+                  vm.snackbar = true;                    
+              }else{
+                  vm.text = "Erro ao cadastrar um produto!";                
+                  vm.snackbar = true;
+              }
+              vm.clean();
+          }).catch(function(error) {            
+              vm.text = error;
+              vm.snackbar = true;
+              vm.clean();
+          });            
+        },
+        submit() {
+          if (this.itemObject)
+            this.updateItem();
+          else this.saveItem();          
         }
     }
 };

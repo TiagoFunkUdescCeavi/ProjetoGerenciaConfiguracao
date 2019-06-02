@@ -3,7 +3,10 @@
     <v-card-title>
       <h1>Produtos</h1>
       
-      <productRegister v-on:OnCloseProductScreen="closeProductScreen"></productRegister>
+      <productRegister 
+        iconName="add"
+        v-on:OnCloseProductScreen="closeProductScreen">
+      </productRegister>
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -27,9 +30,11 @@
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
           <td class="text-xs-center">
-            <v-btn icon>
-              <v-icon>edit</v-icon>
-            </v-btn>
+            <productRegister
+              iconName="edit"
+              :item=props.item              
+              v-on:OnCloseProductScreen="closeProductScreen">
+            </productRegister>
             <v-btn icon>
               <v-icon 
               @click="deleteProduct(props.item)">
@@ -88,12 +93,12 @@ export default {
         });    
     },
     deleteProduct(item){
-      console.log(item);
-      
+      const itemRemove = this.products.find(i => i === item)
+     
       var vm = this;
 
       var data = {
-        "_id": item._id
+        "_id": itemRemove._id
       }
       fetch("http://localhost:3000/product/", {
         method: 'DELETE',
@@ -111,7 +116,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchProducts();    
+    this.fetchProducts();
   }
 }
 </script>
