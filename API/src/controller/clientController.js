@@ -16,7 +16,9 @@ router.get('/', async(req, res) => {
     try{
         var clients = mongoose.model('Client');
         clients.find(function(err, allClients){
-            res.send(allClients);
+            if (err)
+                res.status(400).send({error: err});
+            else res.send(allClients);
         });
     }catch(err){
         return res.status(400).send({error: err});

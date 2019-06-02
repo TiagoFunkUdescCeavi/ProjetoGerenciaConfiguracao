@@ -49,51 +49,62 @@ export default {
     data() {
         return {
             pagination: {
-        rowsPerPage: 10
-      },
-      search: '',
-      headers: [
-          {
-            text: 'Nome',
-            value: 'name'
-          },
-          { 
-            text: 'CPF', 
-            value: 'cpf' 
-          },
-          { 
-            text: 'Logradouro', 
-            value: 'street' 
-          },
-          { 
-            text: 'Número', 
-            value: 'houseNumber' 
-          },
-          { 
-            text: 'Bairro', 
-            value: 'neighborhood' 
-          },
-          { 
-            text: 'Cidade', 
-            value: 'city' 
-          },
-          { 
-            text: 'CEP', 
-            value: 'cep' 
-          },
-          { 
-            text: 'Estado', 
-            value: 'state' 
-          },
-          {
-            text: 'Opções',
-            value: '_id',
-            sortable: false,
-            align: 'center'            
-          }          
-        ],
-      products: []
+                rowsPerPage: 10},
+        search: '',
+        headers: [
+            {
+                text: 'Nome',
+                value: 'name'
+            },
+            { 
+                text: 'CPF', 
+                value: 'cpf' 
+            },
+            { 
+                text: 'Logradouro', 
+                value: 'street' 
+            },
+            { 
+                text: 'Número', 
+                value: 'houseNumber' 
+            },
+            { 
+                text: 'Bairro', 
+                value: 'neighborhood' 
+            },
+            { 
+                text: 'Cidade', 
+                value: 'city' 
+            },
+            { 
+                text: 'CEP', 
+                value: 'cep' 
+            },
+            { 
+                text: 'Estado', 
+                value: 'state' 
+            },
+            {
+                text: 'Opções',
+                value: '_id',
+                sortable: false,
+                align: 'center'            
+            }          
+            ],
+        clients: []
         }
+    },
+    methods: {
+        fetchClients(){
+            fetch("http://localhost:3000/client/").then(response => response.json()).then(data => {
+                this.clients = data;
+            }).catch(function(error){
+                console.log(error);
+            });
+        }
+    },
+    mounted(){
+        this.fetchClients();
     }
 }
 </script>

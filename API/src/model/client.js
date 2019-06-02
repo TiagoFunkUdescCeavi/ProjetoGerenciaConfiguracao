@@ -11,7 +11,7 @@ const ClientSchema = mongoose.Schema({
         type: String,
     },
     houseNumber:{
-        type: Integer,
+        type: [Number],
     },
     neighborhood:{
         type: String,

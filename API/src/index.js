@@ -18,6 +18,7 @@ app.all('/*', function(req, res, next) {
 });
 
 require('./controller/productController')(app);
+require('./controller/clientController')(app);
 
 app.listen(3000);  
 
