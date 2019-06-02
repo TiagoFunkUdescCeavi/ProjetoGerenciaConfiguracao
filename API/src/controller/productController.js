@@ -38,11 +38,7 @@ router.put("/",async function(req,res){
 });
 
 router.delete("/", async function(req,res){
-  console.log( req.body );
-  // var novoID = "ObjectId("+req.body._id+")";
-  // console.log( novoID );
-  const finded = await Product.findByIdAndRemove( req.body._id );
-  console.log( finded );
+  const finded = await Product.findByIdAndRemove(req.body._id, {useFindAndModify: false});
   res.send(finded);
 })
 

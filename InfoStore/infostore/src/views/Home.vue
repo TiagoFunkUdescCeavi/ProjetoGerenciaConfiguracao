@@ -3,7 +3,7 @@
     <v-card-title>
       <h1>Produtos</h1>
       
-      <productRegister v-on:meuEvento="closeProductScreen"></productRegister>
+      <productRegister v-on:OnCloseProductScreen="closeProductScreen"></productRegister>
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -32,7 +32,7 @@
             </v-btn>
             <v-btn icon>
               <v-icon 
-              @click="deleteProduct(props.item._id, props.item.description,props.item.manufacturer)">
+              @click="deleteProduct(props.item)">
                 delete
               </v-icon>
             </v-btn>
@@ -87,23 +87,27 @@ export default {
           console.error(error);
         });    
     },
-    deleteProduct(_id, description, manufacturer){
+    deleteProduct(item){
+      console.log(item);
+      
+      var vm = this;
+
       var data = {
-        "_id": _id,
-        "description": description,
-        "manufacturer": manufacturer
+        "_id": item._id
       }
       fetch("http://localhost:3000/product/", {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify( data )
       }).then(function(response){
-        // console.error(response);
+        if (response.ok){          
+          vm.fetchProducts();
+        }else{
+          console.log(response);
+        }
       }).catch( function(error){
-        console.error(error);
-      });
-
-      this.fetchProducts();
+        console.log(error);
+      });      
     }
   },
   mounted() {
