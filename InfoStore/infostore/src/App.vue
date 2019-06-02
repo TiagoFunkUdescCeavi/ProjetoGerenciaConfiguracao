@@ -16,6 +16,12 @@
       <v-btn icon>
         <v-icon>shopping_cart</v-icon>
       </v-btn>
+
+      <router-link :to="{name: 'clientPage'}">
+        <v-btn icon>
+          <v-icon>person</v-icon>
+        </v-btn>
+      </router-link>
       
     </v-toolbar>
     <v-content> 
