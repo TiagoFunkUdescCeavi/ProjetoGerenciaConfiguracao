@@ -1,12 +1,12 @@
 <template>
   <v-card>
     <v-card-title>
-      <h1>Produtos</h1>
+      <h1>Produtos</h1>    
       
-      <productRegister 
-        iconName="add"
-        v-on:OnCloseProductScreen="closeProductScreen">
-      </productRegister>
+      <v-btn icon @click="dialog = true">
+        <v-icon>add</v-icon>
+      </v-btn>
+             
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -30,22 +30,26 @@
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
           <td class="text-xs-center">
-            <productRegister
-              iconName="edit"
-              :item=props.item              
-              v-on:OnCloseProductScreen="closeProductScreen">
-            </productRegister>
+            <v-btn icon @click="clickProductEdit(products.find(i => i === props.item))">
+              <v-icon>edit</v-icon>
+            </v-btn>
             <v-btn icon>
               <v-icon 
-              @click="deleteProduct(props.item)">
+              @click="deleteProduct(products.find(i => i === props.item))">
                 delete
               </v-icon>
             </v-btn>
           </td>       
         </tr>
       </template>
-    </v-data-table>
-  </v-card>
+    </v-data-table>    
+    <v-dialog v-model="dialog" persistent max-width="800">
+        <productRegister 
+          v-on:OnCloseProductScreen="closeProductScreen"
+          v-on:updateProductItem='childCreated'>
+        </productRegister>
+      </v-dialog>
+  </v-card>  
 </template>
 
 <script>
@@ -73,15 +77,18 @@ export default {
             align: 'center'            
           }          
         ],
-      products: []
+      products: [],
+      selectedItem: Object,
+      dialog: false,
+      editFunc: Function
     }
   },
   components: {
         'productRegister': productRegister
   },
   methods: {
-    closeProductScreen(ProductRegistered) {
-      console.log( ProductRegistered );
+    closeProductScreen(ProductRegistered) {      
+      this.dialog = false;
       if (ProductRegistered)
         this.fetchProducts();
     },
@@ -92,13 +99,11 @@ export default {
           console.error(error);
         });    
     },
-    deleteProduct(item){
-      const itemRemove = this.products.find(i => i === item)
-     
+    deleteProduct(item){         
       var vm = this;
 
       var data = {
-        "_id": itemRemove._id
+        "_id": item._id
       }
       fetch("http://localhost:3000/product/", {
         method: 'DELETE',
@@ -113,6 +118,14 @@ export default {
       }).catch( function(error){
         console.log(error);
       });      
+    },
+    childCreated(childFunc){
+      console.log('setou func');
+      this.editFunc = childFunc;
+    },
+    clickProductEdit(item){
+      this.dialog = true;
+      this.editFunc(item);
     }
   },
   mounted() {
