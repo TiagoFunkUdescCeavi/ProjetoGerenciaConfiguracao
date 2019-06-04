@@ -120,7 +120,6 @@ export default {
       });      
     },
     childCreated(childFunc){
-      console.log('setou func');
       this.editFunc = childFunc;
     },
     clickProductEdit(item){

@@ -52,7 +52,8 @@ export default {
         fabricante: "",
         snackbar: false,
         text: "",
-        itemObject: Object
+        itemObject: Object,
+        setouObj: false
       };
     },
     mounted(){
@@ -63,8 +64,8 @@ export default {
     },
     methods: { 
         updateProductItem(item){
-          console.log('update 2');
           this.itemObject = item;
+          this.setouObj = true;
 
           if (this.itemObject) {
             this.descricao = this.itemObject.description;
@@ -75,6 +76,7 @@ export default {
           this.$emit("OnCloseProductScreen", this.registered);
           this.registered = false;
           this.itemObject = null;
+          this.clean();
         },
         clean() {          
           this.descricao = "";
@@ -147,9 +149,13 @@ export default {
           });            
         },
         submit() {
-          if (this.itemObject)
+          if (this.setouObj)
             this.updateItem();
-          else this.saveItem();          
+          else this.saveItem(); 
+          
+          this.clean();
+          this.setouObj = false;
+          this.itemObject = null;
         }
     }
 };
