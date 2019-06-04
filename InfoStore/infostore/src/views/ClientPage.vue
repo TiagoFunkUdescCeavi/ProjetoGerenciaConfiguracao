@@ -40,7 +40,7 @@
                 edit
               </v-icon>
             </v-btn>
-            <v-btn icon @click="deleteClient(props.item)">
+            <v-btn icon @click="deleteClient(clients.find(i => i === props.item))">              
               <v-icon >
                 delete
               </v-icon>
@@ -118,11 +118,10 @@ export default {
             if (pRegistered)
               this.fetchClients();
         },
-        deleteClient(item){
-          const itemRemove = this.clients.find(i => i === item);
+        deleteClient(item){          
           var vm = this;
           var data = JSON.stringify({
-            "_id": itemRemove._id
+            "_id": item._id
           });
           fetch("http://localhost:3000/client/", {
             method: 'DELETE',
