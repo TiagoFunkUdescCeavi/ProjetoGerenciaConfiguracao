@@ -37,9 +37,9 @@ router.post("/",async function(req,res){
     "state": req.body.state
   }
 
-  var products = mongoose.model('Client');
+  var client = mongoose.model('Client');
 
-  const finded = await products.findByIdAndUpdate(req.body._id, newData, {useFindAndModify: false});
+  const finded = await client.findByIdAndUpdate(req.body._id, newData, {useFindAndModify: false});
   if (finded)
     res.send(newData);
   else res.status(400).send("error");

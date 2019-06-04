@@ -40,7 +40,7 @@
                 edit
               </v-icon>
             </v-btn>
-            <v-btn icon>              
+            <v-btn icon @click="deleteClient(props.item)">
               <v-icon >
                 delete
               </v-icon>
@@ -117,6 +117,26 @@ export default {
         closeClientScreen(pRegistered){
             if (pRegistered)
               this.fetchClients();
+        },
+        deleteClient(item){
+          const itemRemove = this.clients.find(i => i === item);
+          var vm = this;
+          var data = JSON.stringify({
+            "_id": itemRemove._id
+          });
+          fetch("http://localhost:3000/client/", {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+            body: data
+          }).then(function(response){
+            if (response.ok){          
+              vm.fetchClients();
+            }else{
+              console.log(response);
+            }
+          }).catch( function(error){
+            console.log(error);
+          });  
         }
     },
     mounted(){
