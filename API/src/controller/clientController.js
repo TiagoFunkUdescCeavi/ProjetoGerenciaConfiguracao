@@ -22,15 +22,31 @@ router.get('/', async(req, res) => {
         });
     }catch(err){
         return res.status(400).send({error: err});
-    }    
+    }
 });
 
-router.post("/",async function(req,res){  
-  
+router.post("/",async function(req,res){
+  var newData = {
+    "name": req.body.name,
+    "cpf": req.body.cpf,
+    "street": req.body.street,
+    "houseNumber": req.body.houseNumber,
+    "neighborhood": req.body.neighborhood,
+    "city": req.body.city,
+    "cep": req.body.cep,
+    "state": req.body.state
+  }
+
+  var products = mongoose.model('Client');
+
+  const finded = await products.findByIdAndUpdate(req.body._id, newData, {useFindAndModify: false});
+  if (finded)
+    res.send(newData);
+  else res.status(400).send("error");
 });
 
 router.delete("/", async function(req,res){
-  
+
 })
 
 module.exports = app => app.use('/client', router);
