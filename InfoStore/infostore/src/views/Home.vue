@@ -1,9 +1,12 @@
 <template>
   <v-card>
     <v-card-title>
-      <h1>Produtos</h1>
+      <h1>Produtos</h1>    
       
-      <productRegister v-on:OnCloseProductScreen="closeProductScreen"></productRegister>
+      <v-btn icon @click="dialog = true">
+        <v-icon>add</v-icon>
+      </v-btn>
+             
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -27,17 +30,26 @@
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
           <td class="text-xs-center">
-            <v-btn icon>
+            <v-btn icon @click="clickProductEdit(products.find(i => i === props.item))">
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn icon>
-              <v-icon>delete</v-icon>
+              <v-icon 
+              @click="deleteProduct(products.find(i => i === props.item))">
+                delete
+              </v-icon>
             </v-btn>
           </td>       
         </tr>
       </template>
-    </v-data-table>
-  </v-card>
+    </v-data-table>    
+    <v-dialog v-model="dialog" persistent max-width="800">
+        <productRegister 
+          v-on:OnCloseProductScreen="closeProductScreen"
+          v-on:updateProductItem='childCreated'>
+        </productRegister>
+      </v-dialog>
+  </v-card>  
 </template>
 
 <script>
@@ -46,7 +58,7 @@ export default {
   data() {
     return {
       pagination: {
-      rowsPerPage: 10
+        rowsPerPage: 10
       },
       search: '',
       headers: [
@@ -65,14 +77,18 @@ export default {
             align: 'center'            
           }          
         ],
-      products: []
+      products: [],
+      selectedItem: Object,
+      dialog: false,
+      editFunc: Function
     }
   },
   components: {
         'productRegister': productRegister
   },
   methods: {
-    closeProductScreen(ProductRegistered) {
+    closeProductScreen(ProductRegistered) {      
+      this.dialog = false;
       if (ProductRegistered)
         this.fetchProducts();
     },
@@ -82,10 +98,38 @@ export default {
         }).catch(function(error) {
           console.error(error);
         });    
+    },
+    deleteProduct(item){         
+      var vm = this;
+
+      var data = {
+        "_id": item._id
+      }
+      fetch("http://localhost:3000/product/", {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify( data )
+      }).then(function(response){
+        if (response.ok){          
+          vm.fetchProducts();
+        }else{
+          console.log(response);
+        }
+      }).catch( function(error){
+        console.log(error);
+      });      
+    },
+    childCreated(childFunc){
+      console.log('setou func');
+      this.editFunc = childFunc;
+    },
+    clickProductEdit(item){
+      this.dialog = true;
+      this.editFunc(item);
     }
-  },  
+  },
   mounted() {
-    this.fetchProducts();    
-  }  
+    this.fetchProducts();
+  }
 }
 </script>
