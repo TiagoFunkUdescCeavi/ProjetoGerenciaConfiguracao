@@ -1,16 +1,25 @@
 <template>
   <v-app>    
-    <v-toolbar dark color="#009388">      
-      <v-toolbar-title class="white--text-uppercase">
-        
-        Info Store
+    <v-toolbar dark>   
+      <v-toolbar-title class="white--text">        
+        Info Store   
+      </v-toolbar-title>  
 
-      </v-toolbar-title>
-      
       <v-spacer></v-spacer>          
-    </v-toolbar>
+      
+      <router-link :to="{ name: 'home' }">
+        <v-btn icon >
+          <v-icon>home</v-icon>
+        </v-btn>
+      </router-link>                
 
-    <v-content>      
+      <v-btn icon>
+        <v-icon>shopping_cart</v-icon>
+      </v-btn>
+      
+    </v-toolbar>
+    <v-content> 
+      <router-view></router-view>     
     </v-content>  
   </v-app>
 </template>
