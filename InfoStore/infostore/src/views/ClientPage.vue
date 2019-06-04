@@ -37,6 +37,11 @@
           <td class="text-xs-center">
             <v-btn icon>
               <v-icon >
+                edit
+              </v-icon>
+            </v-btn>
+            <v-btn icon>              
+              <v-icon >
                 delete
               </v-icon>
             </v-btn>
