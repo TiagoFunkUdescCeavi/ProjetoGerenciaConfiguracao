@@ -3,7 +3,7 @@ const Product = require('../model/product');
 const mongoose = require('../database');
 const router = express.Router();
 
-router.post('/', async(req, res) => {
+router.put('/', async(req, res) => {
     const {description} = req.body;
 
     if (!description)
@@ -27,19 +27,23 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.put("/",async function(req,res){
-  const finded = await Product.findByIdAndUpdate( req.body._id, {
-    $set: {
-      description: req.body.description,
-      manufacturer: req.body.manufacturer
-    }
-  }, { new: true });
-  res.send( finded );
+router.post("/",async function(req,res){  
+  var newData = {
+    "description": req.body.description,
+    "manufacturer": req.body.manufacturer
+  }
+  
+  var products = mongoose.model('Product');
+  
+  const finded = await products.findByIdAndUpdate(req.body._id, newData, {useFindAndModify: false});
+  if (finded)
+    res.send(finded)
+  else res.status(400).send("error");
 });
 
 router.delete("/", async function(req,res){
-  const finded = await Product.findByIdAndRemove( req.body._id );
-  res.send({status:"sucess"});
+  const finded = await Product.findByIdAndRemove(req.body._id, {useFindAndModify: false});
+  res.send(finded);
 })
 
 module.exports = app => app.use('/product', router);
