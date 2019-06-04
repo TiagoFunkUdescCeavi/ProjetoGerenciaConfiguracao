@@ -2,7 +2,10 @@
   <v-card>
     <v-card-title>
       <h1>Clientes</h1>
-            
+      <clientRegister 
+        iconName="add"
+        v-on:OnCloseClientScreen="closeClientScreen">
+      </clientRegister>
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -45,6 +48,7 @@
 </template>
 
 <script>
+import clientRegister from '../components/Client'
 export default {
     data() {
         return {
@@ -94,6 +98,9 @@ export default {
         clients: []
         }
     },
+    components: {
+        'clientRegister': clientRegister
+    },
     methods: {
         fetchClients(){
             fetch("http://localhost:3000/client/").then(response => response.json()).then(data => {
@@ -101,6 +108,10 @@ export default {
             }).catch(function(error){
                 console.log(error);
             });
+        },
+        closeClientScreen(pRegistered){
+            if (pRegistered)
+              this.fetchClients();
         }
     },
     mounted(){
