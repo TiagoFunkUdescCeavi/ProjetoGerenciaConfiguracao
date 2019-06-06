@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import ClientPage from './views/ClientPage.vue'
-import ChartPage from './views/ChartPage.vue'
+import CartPage from './views/CartPage.vue'
 
 Vue.use(Router)
 
@@ -23,7 +23,7 @@ export default new Router({
     {
       path: '/chart',
       name: 'chartPage',
-      component: ChartPage
+      component: CartPage
     }
   ]
 })
