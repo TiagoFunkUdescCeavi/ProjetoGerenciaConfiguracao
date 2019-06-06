@@ -2,10 +2,11 @@
   <v-card>
     <v-card-title>
       <h1>Clientes</h1>
-      <clientRegister 
-        iconName="add"
-        v-on:OnCloseClientScreen="closeClientScreen">
-      </clientRegister>
+      
+      <v-btn icon @click="dialog = true">
+        <v-icon>add</v-icon>
+      </v-btn>
+
       <v-spacer></v-spacer>
       
       <v-text-field
@@ -35,8 +36,8 @@
           <td>{{props.item.cep}}</td>
           <td>{{props.item.state}}</td>
           <td class="text-xs-center">
-            <v-btn icon>
-              <v-icon >
+            <v-btn icon @click="clickClientEdit(clients.find(i => i === props.item))">
+              <v-icon> 
                 edit
               </v-icon>
             </v-btn>
@@ -49,6 +50,12 @@
         </tr>
       </template>
     </v-data-table>
+    <v-dialog v-model="dialog" persistent max-width="800">
+      <clientRegister 
+        v-on:OnCloseClientScreen="closeClientScreen"
+        v-on:updateClientItem='clientCreated'>
+      </clientRegister>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -59,48 +66,50 @@ export default {
         return {
             pagination: {
                 rowsPerPage: 10},
-        search: '',
-        headers: [
-            {
-                text: 'Nome',
-                value: 'name'
-            },
-            { 
-                text: 'CPF', 
-                value: 'cpf' 
-            },
-            { 
-                text: 'Logradouro', 
-                value: 'street' 
-            },
-            { 
-                text: 'Número', 
-                value: 'houseNumber' 
-            },
-            { 
-                text: 'Bairro', 
-                value: 'neighborhood' 
-            },
-            { 
-                text: 'Cidade', 
-                value: 'city' 
-            },
-            { 
-                text: 'CEP', 
-                value: 'cep' 
-            },
-            { 
-                text: 'Estado', 
-                value: 'state' 
-            },
-            {
-                text: 'Opções',
-                value: '_id',
-                sortable: false,
-                align: 'center'            
-            }          
-            ],
-        clients: []
+            search: '',
+            headers: [
+                {
+                    text: 'Nome',
+                    value: 'name'
+                },
+                { 
+                    text: 'CPF', 
+                    value: 'cpf' 
+                },
+                { 
+                    text: 'Logradouro', 
+                    value: 'street' 
+                },
+                { 
+                    text: 'Número', 
+                    value: 'houseNumber' 
+                },
+                { 
+                    text: 'Bairro', 
+                    value: 'neighborhood' 
+                },
+                { 
+                    text: 'Cidade', 
+                    value: 'city' 
+                },
+                { 
+                    text: 'CEP', 
+                    value: 'cep' 
+                },
+                { 
+                    text: 'Estado', 
+                    value: 'state' 
+                },
+                {
+                    text: 'Opções',
+                    value: '_id',
+                    sortable: false,
+                    align: 'center'            
+                }          
+                ],
+            clients: [],
+            dialog: false,
+            editFunc: Function
         }
     },
     components: {
@@ -114,7 +123,8 @@ export default {
                 console.log(error);
             });
         },
-        closeClientScreen(pRegistered){
+        closeClientScreen(pRegistered){          
+            this.dialog = false;
             if (pRegistered)
               this.fetchClients();
         },
@@ -136,6 +146,13 @@ export default {
           }).catch( function(error){
             console.log(error);
           });  
+        },
+        clickClientEdit(item){
+          this.dialog = true;
+          this.editFunc(item);
+        },
+        clientCreated(childFunc){
+          this.editFunc = childFunc;
         }
     },
     mounted(){

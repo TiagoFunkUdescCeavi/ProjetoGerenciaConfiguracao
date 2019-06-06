@@ -1,73 +1,64 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="800">
-    <template v-slot:activator="{ on }">
-      <v-btn icon 
-        v-on="on"
-        @click="iconClick">
-        <v-icon>{{iconName}}</v-icon>
+  <v-card>    
+    <v-card-title>
+      <span class="headline">Cadastro de Cliente</span>
+    </v-card-title>
+    <v-card-text>
+      <v-container grid-list-md>
+        <v-layout wrap>              
+          <v-flex xs12>
+            <v-text-field label="Nome*" v-model="name" required></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="CPF*" v-model="cpf" :mask="cpfMask" required></v-text-field>
+          </v-flex>              
+          <v-flex xs12>
+            <v-text-field label="Logradouro*" v-model="street" required></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="Número*" v-model="houseNumber" :mask="numMask" required></v-text-field>
+          </v-flex>              
+          <v-flex xs12>
+            <v-text-field label="Bairro*" v-model="neighborhood" required></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="Cidade*" v-model="city" required></v-text-field>
+          </v-flex>              
+          <v-flex xs12>
+            <v-text-field label="CEP*" v-model="cep" :mask="cepMask" required></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="Estado*" v-model="state" required></v-text-field>
+          </v-flex>              
+          
+        </v-layout>
+      </v-container>
+      <small>*Indica campos obrigatórios</small>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue darken-1" flat @click="submit">Salvar</v-btn>          
+      <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
+    </v-card-actions>
+    <v-snackbar
+      v-model="snackbar" 
+      :bottom="false"
+      :left="false"
+      :multi-line="true"
+      :right="false"
+      :timeout="6000"
+      :top="true"
+      :vertical="false">
+    {{text}}
+    <v-btn
+        color="pink"
+        flat
+        @click="snackbar = false"
+      >
+        Close
       </v-btn>
-    </template>    
-    <v-card>    
-      <v-card-title>
-        <span class="headline">Cadastro de Cliente</span>
-      </v-card-title>
-      <v-card-text>
-        <v-container grid-list-md>
-          <v-layout wrap>              
-            <v-flex xs12>
-              <v-text-field label="Nome*" v-model="name" required></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field label="CPF*" v-model="cpf" :mask="cpfMask" required></v-text-field>
-            </v-flex>              
-            <v-flex xs12>
-              <v-text-field label="Logradouro*" v-model="street" required></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field label="Número*" v-model="houseNumber" :mask="numMask" required></v-text-field>
-            </v-flex>              
-            <v-flex xs12>
-              <v-text-field label="Bairro*" v-model="neighborhood" required></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field label="Cidade*" v-model="city" required></v-text-field>
-            </v-flex>              
-            <v-flex xs12>
-              <v-text-field label="CEP*" v-model="cep" :mask="cepMask" required></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field label="Estado*" v-model="state" required></v-text-field>
-            </v-flex>              
-            
-          </v-layout>
-        </v-container>
-        <small>*Indica campos obrigatórios</small>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" flat @click="submit">Salvar</v-btn>          
-        <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
-      </v-card-actions>
-      <v-snackbar
-        v-model="snackbar" 
-        :bottom="false"
-        :left="false"
-        :multi-line="true"
-        :right="false"
-        :timeout="6000"
-        :top="true"
-        :vertical="false">
-      {{text}}
-      <v-btn
-          color="pink"
-          flat
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </v-snackbar>
-    </v-card>  
-  </v-dialog>   
+    </v-snackbar>
+  </v-card>  
 </template>
 
 <script>
@@ -75,7 +66,6 @@ export default {
     data() {
       return {
         registered: false,
-        dialog: false,
         name: "",
         cpf: "",
         street: "",
@@ -89,36 +79,52 @@ export default {
         cpfMask: "###.###.###-##",
         cepMask: "#####-###",
         numMask: "#####",
-        itemObject: this.item
+        itemObject: Object,
+        setouObj: false
       };
     },
     mounted(){
       this.registered = false;
     },
-    props:{
-      item: Object,
-      iconName: String
+    created: function(){
+      this.$emit('updateClientItem', this.updateClientItem);
     },
     methods: { 
-        close() {
-          this.dialog = false;
-          this.$emit("OnCloseClientScreen", this.registered);
-          this.registered = false;
-        },
-        clean() {          
-          this.descricao = "";
-          this.fabricante = "";                       
-        },     
-        iconClick() {
-          this.registered = false;
+        updateClientItem(item){
+          this.itemObject = item;
+          this.setouObj = true;
 
-          if (this.itemObject){            
-            this.descricao = this.itemObject.description;
-            this.fabricante = this.itemObject.manufacturer;
+          if (this.itemObject){
+            this.name = this.itemObject.name;
+            this.cpf = this.itemObject.cpf;
+            this.street = this.itemObject.street;
+            this.houseNumber = this.itemObject.houseNumber;
+            this.neighborhood = this.itemObject.neighborhood;
+            this.city = this.itemObject.city;
+            this.cep = this.itemObject.cep;
+            this.state = this.itemObject.state;
           }
         },
+        close() {
+          this.$emit("OnCloseClientScreen", this.registered);
+          this.registered = false;
+          this.itemObject = null;
+          this.clean();
+          this.snackbar = false;
+        },
+        clean() {          
+          this.name = "";
+          this.cpf = "";
+          this.street = "";
+          this.houseNumber = "";
+          this.neighborhood = "";
+          this.city = "";
+          this.cep = "";
+          this.state = "";
+        },     
         updateItem(){
           let data = JSON.stringify({
+            "_id": this.itemObject._id,
             "name": this.name,
             "cpf": this.cpf,
             "street": this.street,
@@ -191,9 +197,13 @@ export default {
           });            
         },
         submit() {
-          if (this.itemObject)
+          if (this.setouObj)
             this.updateItem();
           else this.saveItem();          
+
+          this.clean();
+          this.setouObj = false;
+          this.itemObject = null;
         }
     }
 };

@@ -44,11 +44,11 @@
       </template>
     </v-data-table>    
     <v-dialog v-model="dialog" persistent max-width="800">
-        <productRegister 
-          v-on:OnCloseProductScreen="closeProductScreen"
-          v-on:updateProductItem='childCreated'>
-        </productRegister>
-      </v-dialog>
+      <productRegister 
+        v-on:OnCloseProductScreen="closeProductScreen"
+        v-on:updateProductItem='childCreated'>
+      </productRegister>
+    </v-dialog>
   </v-card>  
 </template>
 

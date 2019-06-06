@@ -77,6 +77,7 @@ export default {
           this.registered = false;
           this.itemObject = null;
           this.clean();
+          this.snackbar = false;
         },
         clean() {          
           this.descricao = "";
