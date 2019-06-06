@@ -19,9 +19,11 @@
         </v-btn>
       </router-link>
 
-      <v-btn icon>
-        <v-icon>shopping_cart</v-icon>
-      </v-btn>    
+      <router-link :to="{name: 'chartPage'}">
+        <v-btn icon>
+          <v-icon>shopping_cart</v-icon>
+        </v-btn>    
+      </router-link>
       
     </v-toolbar>
     <v-content> 

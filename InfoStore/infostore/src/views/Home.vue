@@ -30,6 +30,11 @@
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
           <td class="text-xs-center">
+            <v-btn icon @click="addProductToChart(products.find(i => i === props.item))">
+              <v-icon>
+                add_shopping_cart
+              </v-icon>
+            </v-btn>
             <v-btn icon @click="clickProductEdit(products.find(i => i === props.item))">
               <v-icon>edit</v-icon>
             </v-btn>
@@ -125,6 +130,9 @@ export default {
     clickProductEdit(item){
       this.dialog = true;
       this.editFunc(item);
+    },
+    addProductToChart(item){
+
     }
   },
   mounted() {
