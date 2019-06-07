@@ -21,8 +21,8 @@ export default new Router({
       component: ClientPage
     },
     {
-      path: '/chart',
-      name: 'chartPage',
+      path: '/cart',
+      name: 'cartPage',
       component: CartPage
     }
   ]

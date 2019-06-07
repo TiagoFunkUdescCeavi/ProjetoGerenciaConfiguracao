@@ -14,14 +14,17 @@
       class="elevation-1"
      >      
       <template v-slot:items="props">
-        <tr>          
-          <td>{{props.item.description}}</td>
+        <tr>
+          <td>{{props.item.product.description}}</td>
           <td>{{props.item.quantity}}</td>
-          <td>{{props.item.value}}</td>           
-          <td>{{props.item.discount}}</td>           
+          <td>{{props.item.value}}</td>        
+          <td>{{props.item.discount}}</td>
         </tr>
       </template>
-    </v-data-table>    
+    </v-data-table>        
+    <v-btn >
+      Finalizar Pedido
+    </v-btn>    
   </v-card>  
 </template>
 
@@ -48,7 +51,7 @@ export default {
                     value: 'value'
                 },
                 {
-                    text: 'Desconto',
+                    text: 'Desconto %',
                     value: 'discount'
                 }
             ]

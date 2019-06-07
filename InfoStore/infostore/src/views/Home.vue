@@ -59,6 +59,7 @@
 
 <script>
 import productRegister from '../components/Product'
+import CartData from '../data/CartData'
 export default {
   data() {
     return {
@@ -132,7 +133,27 @@ export default {
       this.editFunc(item);
     },
     addProductToChart(item){
+      var cartProducts = CartData.getProducts();            
+      var productData = null;
+      
+      function EncontrarProduto(itemProd){
+        if (itemProd.product._id === item._id)
+          productData = itemProd;
+      }
 
+      cartProducts.forEach(EncontrarProduto);
+
+      if (!productData)
+        cartProducts.push({
+          "product": item,
+          "quantity": 1,
+          "value": 10,
+          "discount": 10
+          });
+      else productData.quantity += 1;
+
+      CartData.setProducts(cartProducts);
+      console.log(cartProducts);
     }
   },
   mounted() {

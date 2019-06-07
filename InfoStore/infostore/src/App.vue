@@ -19,7 +19,7 @@
         </v-btn>
       </router-link>
 
-      <router-link :to="{name: 'chartPage'}">
+      <router-link :to="{name: 'cartPage'}">
         <v-btn icon>
           <v-icon>shopping_cart</v-icon>
         </v-btn>    
