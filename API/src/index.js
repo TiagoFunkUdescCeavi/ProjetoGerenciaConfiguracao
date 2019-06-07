@@ -6,8 +6,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
-app.all('/*', function(req, res, next) {    
-  res.header("Access-Control-Allow-Origin", "*"); 
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
   if (req.method == 'OPTIONS') {
@@ -19,7 +19,8 @@ app.all('/*', function(req, res, next) {
 
 require('./controller/productController')(app);
 require('./controller/clientController')(app);
+require('./controller/orderController')(app);
 
-app.listen(3000);  
+app.listen(3000);
 
 console.log('Node API is running and listening on port 3000');
