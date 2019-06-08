@@ -22,6 +22,21 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.post("/",async function(req,res){
+  var newData = {
+    "client": req.body.client,
+    "products": req.body.products,
+    "totalValue": req.body.totalValue
+  }
+
+  var orders = mongoose.model('Order');
+
+  const finded = await orders.findByIdAndUpdate(req.body._id, newData, {useFindAndModify: false});
+  if (finded)
+    res.send(finded)
+  else res.status(400).send("error");
+});
+
 router.delete("/", async function(req,res){
   const finded = await Order.findByIdAndRemove(req.body._id, {useFindAndModify: false});
   res.send(finded);
