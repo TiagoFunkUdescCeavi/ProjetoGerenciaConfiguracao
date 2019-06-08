@@ -4,7 +4,7 @@ const Product = require('./product');
 
 const SaleItem = mongoose.Schema({
     product:  Product,
-    amount: Number,
+    quantity: Number,
     price: Number,
     discount: Number
 });

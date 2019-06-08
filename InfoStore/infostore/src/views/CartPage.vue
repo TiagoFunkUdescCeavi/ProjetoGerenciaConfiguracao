@@ -22,7 +22,7 @@
         </tr>
       </template>
     </v-data-table>        
-    <v-btn >
+    <v-btn @click="salvar">
       Finalizar Pedido
     </v-btn>    
   </v-card>  
@@ -30,10 +30,12 @@
 
 <script>
 import CartData from '../data/CartData';
+import { log } from 'util';
 export default {
     data(){
         return {
             cartProducts: CartData.getProducts(),
+            totalValue: 10,
             pagination:{
                 rowsPerPage: 10
             },
@@ -58,6 +60,35 @@ export default {
         }
     },
     mounted(){
+    },
+    methods: {
+      salvar(){
+        if( this.cartProducts.length == 0 ){
+          console.log( "Vazio" );
+          return;
+        }
+        const newOrder = {
+          "products" : this.cartProducts,
+          "totalValue": this.totalValue
+        };
+        const data = JSON.stringify( newOrder );
+
+        var vm = this;
+
+        fetch("http://localhost:3000/order/", {
+              headers: {
+                  'accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              method: "PUT",
+              body: data
+          }).then(function(response) {            
+              vm.cartProducts = [];
+          }).catch(function(error) {
+            console.log(error);
+          });
+
+      }
     }
 }
 </script>

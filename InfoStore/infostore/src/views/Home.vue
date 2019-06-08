@@ -103,7 +103,7 @@ export default {
           this.products = data;
         }).catch(function(error) {
           console.error(error);
-        });    
+        });  
     },
     deleteProduct(item){         
       var vm = this;
@@ -147,7 +147,7 @@ export default {
         cartProducts.push({
           "product": item,
           "quantity": 1,
-          "value": 10,
+          "price": 10,
           "discount": 10
           });
       else productData.quantity += 1;
