@@ -15,22 +15,11 @@ router.put('/', async(req, res) => {
 router.get('/', async(req, res) => {
     try{
         var order = mongoose.model('Order');
-        var allOrders = await order.find()
-        .populate("client");
-        // .populate("client products");
+        var allOrders = await order.find();
         res.send(allOrders);
     }catch(err){
         return res.status(400).send({error: err});
     }
 });
-
-// Manager.find()
-//     .populate({
-//          path    : 'users',
-//          populate: [
-//              { path: 'cars' },
-//              { path: 'houses' }
-//          ]
-//     });
 
 module.exports = app => app.use('/order', router);

@@ -3,20 +3,14 @@ const Client = require('./client');
 const Product = require('./product');
 
 const SaleItem = mongoose.Schema({
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'product'
-    },
+    product:  Product,
     amount: Number,
     price: Number,
     discount: Number
 });
 
 const OrderSchema = mongoose.Schema({
-    client:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Client'
-    },
+    client:Client,
     products: [ SaleItem ],
     totalValue:{ type: Number },
 });

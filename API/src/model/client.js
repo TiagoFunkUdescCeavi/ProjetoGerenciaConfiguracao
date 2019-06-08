@@ -17,7 +17,7 @@ const ClientSchema = mongoose.Schema({
         type: String,
     },
     city:{
-        type: String,        
+        type: String,
     },
     cep:{
         type: String,
@@ -30,3 +30,4 @@ const ClientSchema = mongoose.Schema({
 const Client = mongoose.model('Client', ClientSchema);
 
 module.exports = Client;
+module.exports = ClientSchema;
