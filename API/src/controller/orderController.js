@@ -22,4 +22,9 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.delete("/", async function(req,res){
+  const finded = await Order.findByIdAndRemove(req.body._id, {useFindAndModify: false});
+  res.send(finded);
+})
+
 module.exports = app => app.use('/order', router);
