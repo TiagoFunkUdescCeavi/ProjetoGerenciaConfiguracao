@@ -17,7 +17,7 @@ const ClientSchema = mongoose.Schema({
         type: String,
     },
     city:{
-        type: String,        
+        type: String,
     },
     cep:{
         type: String,

@@ -30,6 +30,11 @@
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
           <td class="text-xs-center">
+            <v-btn icon @click="addProductToChart(products.find(i => i === props.item))">
+              <v-icon>
+                add_shopping_cart
+              </v-icon>
+            </v-btn>
             <v-btn icon @click="clickProductEdit(products.find(i => i === props.item))">
               <v-icon>edit</v-icon>
             </v-btn>
@@ -54,6 +59,7 @@
 
 <script>
 import productRegister from '../components/Product'
+import CartData from '../data/CartData'
 export default {
   data() {
     return {
@@ -97,7 +103,7 @@ export default {
           this.products = data;
         }).catch(function(error) {
           console.error(error);
-        });    
+        });  
     },
     deleteProduct(item){         
       var vm = this;
@@ -125,6 +131,28 @@ export default {
     clickProductEdit(item){
       this.dialog = true;
       this.editFunc(item);
+    },
+    addProductToChart(item){
+      var cartProducts = CartData.getProducts();            
+      var productData = null;
+      
+      function EncontrarProduto(itemProd){
+        if (itemProd.product._id === item._id)
+          productData = itemProd;
+      }
+
+      cartProducts.forEach(EncontrarProduto);
+
+      if (!productData)
+        cartProducts.push({
+          "product": item,
+          "quantity": 1,
+          "price": 10,
+          "discount": 10
+          });
+      else productData.quantity += 1;
+
+      CartData.setProducts(cartProducts);
     }
   },
   mounted() {
