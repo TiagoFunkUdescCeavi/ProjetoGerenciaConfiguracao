@@ -153,7 +153,6 @@ export default {
       else productData.quantity += 1;
 
       CartData.setProducts(cartProducts);
-      console.log(cartProducts);
     }
   },
   mounted() {

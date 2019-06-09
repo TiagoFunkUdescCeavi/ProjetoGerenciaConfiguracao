@@ -36,6 +36,11 @@
           <td>{{props.item.cep}}</td>
           <td>{{props.item.state}}</td>
           <td class="text-xs-center">
+            <v-btn icon @click="showOrders(clients.find(i => i === props.item))">
+              <v-icon> 
+                library_books
+              </v-icon>
+            </v-btn>
             <v-btn icon @click="clickClientEdit(clients.find(i => i === props.item))">
               <v-icon> 
                 edit
@@ -53,14 +58,20 @@
     <v-dialog v-model="dialog" persistent max-width="800">
       <clientRegister 
         v-on:OnCloseClientScreen="closeClientScreen"
-        v-on:updateClientItem='clientCreated'>
+        v-on:updateClientItem="clientCreated">
       </clientRegister>
+    </v-dialog>
+    <v-dialog v-model="dialogOrders">
+      <ClientOrders
+        v-on:OrderScreenCreated="orderScreenCreated">
+      </ClientOrders>
     </v-dialog>
   </v-card>
 </template>
 
 <script>
 import clientRegister from '../components/Client'
+import ClientOrders from '../components/ClientOrders'
 export default {
     data() {
         return {
@@ -109,11 +120,14 @@ export default {
                 ],
             clients: [],
             dialog: false,
-            editFunc: Function
+            dialogOrders: false,
+            editFunc: Function,
+            orderFunc: Function
         }
     },
     components: {
-        'clientRegister': clientRegister
+        'clientRegister': clientRegister,
+        'ClientOrders': ClientOrders
     },
     methods: {
         fetchClients(){
@@ -127,6 +141,9 @@ export default {
             this.dialog = false;
             if (pRegistered)
               this.fetchClients();
+        },
+        orderScreenCreated(childFunc){
+          this.orderFunc = childFunc;
         },
         deleteClient(item){          
           var vm = this;
@@ -153,6 +170,10 @@ export default {
         },
         clientCreated(childFunc){
           this.editFunc = childFunc;
+        },
+        showOrders(item){   
+          this.dialogOrders = true;
+          this.orderFunc(item);
         }
     },
     mounted(){

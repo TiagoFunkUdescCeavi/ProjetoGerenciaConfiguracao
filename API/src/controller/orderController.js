@@ -22,6 +22,16 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.get('/client', async(req, res) => {
+  try{
+    var order = mongoose.model('Order');
+    var clientOrders = await order.find({"client._id":req.query.id});
+    res.send(clientOrders);
+  }catch(err){
+    return res.status(400).send({error: err});
+  }
+});
+
 router.post("/",async function(req,res){
   var newData = {
     "client": req.body.client,
