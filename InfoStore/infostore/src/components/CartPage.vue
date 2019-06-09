@@ -125,7 +125,8 @@ export default {
                   sortable: false,
                   align: "center"
                 }
-            ]
+            ],
+          orderObj: null
         }
     },
     mounted(){
@@ -153,6 +154,9 @@ export default {
         var total = 0;
         var allProducts = CartData.getProducts();
 
+        if (this.orderObj)
+          allProducts = this.orderObj.products;
+
         function sumTotal(item){
           var itemVal = item.price * item.quantity;
           total += (itemVal * (1 - (item.discount / 100)));
@@ -161,6 +165,27 @@ export default {
         allProducts.forEach(sumTotal);
 
         return total;
+      },
+      updateOrder(){
+        this.orderObj.client = this.selected;
+        const data = JSON.stringify(this.orderObj);
+        var vm = this;
+        fetch("http://localhost:3000/order/", {
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: data
+        }).then(function(response) {                   
+            vm.cartProducts = [];
+            vm.selected = null;
+            vm.totalValue = 0;              
+            vm.$emit("OnCloseCartScreen");
+            vm.orderObj = null;
+        }).catch(function(error) {
+          console.log(error);
+        });        
       },
       salvar(){
         if (!this.selected){
@@ -172,6 +197,11 @@ export default {
         if (this.cartProducts.length == 0){
           this.snackText = "Não há produtos no carrinho!";
           this.snackbar = true;
+          return;
+        }
+
+        if (this.orderObj){
+          this.updateOrder();
           return;
         }
         
@@ -212,7 +242,16 @@ export default {
           this.cartProducts.splice(index, 1);          
           this.totalValue = this.getTotalValue();
         }
-      }
+      },
+      orderItem(order){
+        this.orderObj = order;
+        this.cartProducts = order.products;
+        this.selected = order.client;
+        this.totalValue = this.getTotalValue();
+      }      
+    },
+    created(){
+      this.$emit("updateCartItem", this.orderItem);
     }
 }
 </script>

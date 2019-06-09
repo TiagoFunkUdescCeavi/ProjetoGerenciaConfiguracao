@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import ClientPage from './views/ClientPage.vue'
-import CartPage from './views/CartPage.vue'
+import CartPage from './components/CartPage.vue'
 
 Vue.use(Router)
 

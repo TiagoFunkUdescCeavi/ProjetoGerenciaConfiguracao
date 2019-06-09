@@ -35,8 +35,7 @@ router.get('/client', async(req, res) => {
 router.post("/",async function(req,res){
   var newData = {
     "client": req.body.client,
-    "products": req.body.products,
-    "totalValue": req.body.totalValue
+    "products": req.body.products
   }
 
   var orders = mongoose.model('Order');

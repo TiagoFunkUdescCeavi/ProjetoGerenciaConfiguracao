@@ -18,7 +18,7 @@
           <td>R$ {{getTotalPrice(props.item.products)}}</td> 
           <td>{{getProductsName(props.item.products)}}</td>
           <td class="text-xs-center">
-            <v-btn icon >
+            <v-btn icon @click="editOrder(orders.find(i => i === props.item))">
               <v-icon>edit</v-icon>
             </v-btn>
             <v-btn icon @click="deleteOrder(orders.find(i => i === props.item))">
@@ -27,11 +27,24 @@
           </td>       
         </tr>
       </template>
-    </v-data-table>        
+    </v-data-table>   
+    <v-dialog v-model="dialog" persistent="" max-width="800">
+      <v-card>
+        <CartPage 
+          v-on:OnCloseCartScreen="closeCard"
+          v-on:updateCartItem='childCreated'>
+        </CartPage>
+        <v-card-actions>
+          <v-spacer></v-spacer>          
+          <v-btn color="blue darken-1" flat @click="closeCard">Fechar</v-btn>
+        </v-card-actions>    
+      </v-card>
+    </v-dialog>       
   </v-card>  
 </template>
 
 <script>
+import CartPage from './CartPage'
 export default {
   data() {
     return {
@@ -60,13 +73,25 @@ export default {
         ],
       orders: [],
       client: "",
-      clientObj: null
+      clientObj: null,
+      cartFunc: Function,
+      dialog: false
     }
+  },
+  components:{
+    "CartPage": CartPage
   },
   created(){
     this.$emit("OrderScreenCreated", this.updateClient);
   },
   methods:{
+    closeCard(){
+      this.fetchOrders();
+      this.dialog = false;
+    },
+    childCreated(childFunc){
+      this.cartFunc = childFunc;
+    },
     updateClient(item){      
       this.clientObj = item;
       this.client = this.clientObj.name;
@@ -122,6 +147,10 @@ export default {
       }).catch( function(error){
         console.log(error);
       });     
+    },
+    editOrder(item){
+      this.dialog = true;
+      this.cartFunc(item);
     }
   }
 }
