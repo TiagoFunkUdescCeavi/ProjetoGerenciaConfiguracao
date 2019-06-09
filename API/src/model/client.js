@@ -30,4 +30,3 @@ const ClientSchema = mongoose.Schema({
 const Client = mongoose.model('Client', ClientSchema);
 
 module.exports = Client;
-module.exports = ClientSchema;

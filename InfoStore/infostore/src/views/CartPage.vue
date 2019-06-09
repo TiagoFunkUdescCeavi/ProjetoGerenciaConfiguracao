@@ -22,6 +22,14 @@
         </tr>
       </template>
     </v-data-table>        
+    <v-flex xs12>
+        <v-combobox
+          v-model="select"
+          :items="clients"
+          chips
+          label="Cliente"
+        ></v-combobox>
+      </v-flex>
     <v-btn @click="salvar">
       Finalizar Pedido
     </v-btn>    
@@ -35,6 +43,8 @@ export default {
     data(){
         return {
             cartProducts: CartData.getProducts(),
+            select: '',
+            clients: [],
             totalValue: 10,
             pagination:{
                 rowsPerPage: 10
@@ -60,8 +70,19 @@ export default {
         }
     },
     mounted(){
+      this.fetchClients();
     },
     methods: {
+      fetchClients(){
+        fetch("http://localhost:3000/client/").then(response => response.json()).then(data => {              
+          
+          data.array.forEach(element => {
+            this.clients.push(element.name);
+          });
+        }).catch(function(error){
+          console.log(error);
+        });
+      },
       salvar(){
         if( this.cartProducts.length == 0 ){
           console.log( "Vazio" );
