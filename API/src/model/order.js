@@ -3,7 +3,6 @@ const mongoose = require('../database');
 const SaleItem = mongoose.Schema({
     product:  {},
     quantity: Number,
-    price: Number,
     discount: Number
 });
 

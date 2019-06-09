@@ -112,7 +112,7 @@ export default {
       var totalPrice = 0.0;
 
       function sum(item){
-        var itemVal = item.price * item.quantity;
+        var itemVal = item.product.price * item.quantity;
         totalPrice += (itemVal * (1 - (item.discount / 100)));
       }
 

@@ -29,6 +29,7 @@
         <tr>          
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
+          <td>{{props.item.price}}</td> 
           <td class="text-xs-center">
             <v-btn icon @click="addProductToChart(products.find(i => i === props.item))">
               <v-icon>
@@ -75,6 +76,10 @@ export default {
           { 
             text: 'Fabricante', 
             value: 'manufacturer' 
+          },
+          {
+            text: "Valor Unitário",
+            value: "price"
           },
           {
             text: 'Opções',

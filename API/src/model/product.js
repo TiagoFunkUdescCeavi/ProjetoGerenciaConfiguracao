@@ -6,6 +6,9 @@ const ProductSchema = mongoose.Schema({
     },
     manufacturer:{
         type: String,
+    },
+    price:{
+        type: Number,
     }
 });
 

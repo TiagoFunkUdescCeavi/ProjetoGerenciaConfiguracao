@@ -10,9 +10,6 @@
             <v-text-field label="Quantidade" v-model="quantity" type="number" required></v-text-field>
           </v-flex>
           <v-flex xs12>
-            <v-text-field label="Preço" v-model="price" type="number" prefix="R$" required></v-text-field>
-          </v-flex>
-          <v-flex xs12>
             <v-text-field label="Desconto" v-model="discount" type="number" suffix="%" required></v-text-field>
           </v-flex>          
         </v-layout>
@@ -31,8 +28,7 @@ export default{
     data(){
         return{
             description:"",
-            quantity:"",
-            price:"",
+            quantity:"",            
             discount:"",
             order: null
         }    
@@ -45,13 +41,11 @@ export default{
             this.order = orderItem;
             this.description = orderItem.product.description;
             console.log(orderItem);
-            this.quantity = orderItem.quantity;            
-            this.price = orderItem.price;
+            this.quantity = orderItem.quantity;                        
             this.discount = orderItem.discount;            
         },
         submit(){
-            this.order.quantity = this.quantity;
-            this.order.price = this.price;
+            this.order.quantity = this.quantity;            
             this.order.discount = this.discount;
             this.close();
         },

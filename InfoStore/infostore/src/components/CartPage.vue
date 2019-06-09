@@ -17,7 +17,7 @@
         <tr>
           <td>{{props.item.product.description}}</td>
           <td>{{props.item.quantity}}</td>
-          <td>{{props.item.price}}</td>        
+          <td>{{props.item.product.price}}</td>        
           <td>{{props.item.discount}}</td>
           <td class="text-xs-center">
             <v-btn icon @click="clickOrderEdit(cartProducts.find(i => i === props.item))">
@@ -158,7 +158,7 @@ export default {
           allProducts = this.orderObj.products;
 
         function sumTotal(item){
-          var itemVal = item.price * item.quantity;
+          var itemVal = item.product.price * item.quantity;
           total += (itemVal * (1 - (item.discount / 100)));
         }
 
