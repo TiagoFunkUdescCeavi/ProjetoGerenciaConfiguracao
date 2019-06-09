@@ -152,8 +152,7 @@ export default {
         cartProducts.push({
           "product": item,
           "quantity": 1,
-          "price": 10,
-          "discount": 10
+          "discount": 0
           });
       else productData.quantity += 1;
 

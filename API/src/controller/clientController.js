@@ -34,7 +34,8 @@ router.post("/",async function(req,res){
     "neighborhood": req.body.neighborhood,
     "city": req.body.city,
     "cep": req.body.cep,
-    "state": req.body.state
+    "state": req.body.state,
+    "discount": req.body.discount
   }
 
   var client = mongoose.model('Client');

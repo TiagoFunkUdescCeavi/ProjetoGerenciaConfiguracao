@@ -44,6 +44,7 @@
         :items="clients"
         item-text="name"
         label="Cliente"
+        v-on:change="changeClient"
         return-object
         ></v-select>
       </v-flex>      
@@ -136,6 +137,17 @@ export default {
       "OrderScreen": OrderScreen
     },
     methods: {
+      changeClient(client){
+        function changeDiscount(product){
+          if (client.discount)
+            product.discount = client.discount;
+          else product.discount = 0;
+        }
+
+        this.cartProducts.forEach(changeDiscount);
+
+        this.totalValue = this.getTotalValue();
+      },
       childCreated(childFunc){
         this.editFunc = childFunc;
       },

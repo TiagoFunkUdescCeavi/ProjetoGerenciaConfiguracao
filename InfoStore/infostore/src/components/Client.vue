@@ -29,8 +29,10 @@
           </v-flex>
           <v-flex xs12>
             <v-text-field label="Estado*" v-model="state" required></v-text-field>
-          </v-flex>              
-          
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="Desconto" v-model="discount" type="number" suffix="%" required></v-text-field>
+          </v-flex>          
         </v-layout>
       </v-container>
       <small>*Indica campos obrigatórios</small>
@@ -80,7 +82,8 @@ export default {
         cepMask: "#####-###",
         numMask: "#####",
         itemObject: Object,
-        setouObj: false
+        setouObj: false,
+        discount: 0
       };
     },
     mounted(){
@@ -103,6 +106,7 @@ export default {
             this.city = this.itemObject.city;
             this.cep = this.itemObject.cep;
             this.state = this.itemObject.state;
+            this.discount = this.itemObject.discount;
           }
         },
         close() {
@@ -121,6 +125,7 @@ export default {
           this.city = "";
           this.cep = "";
           this.state = "";
+          this.discount = 0;
         },     
         updateItem(){
           let data = JSON.stringify({
@@ -132,7 +137,8 @@ export default {
             "neighborhood": this.neighborhood,
             "city": this.city,
             "cep": this.cep,
-            "state": this.state
+            "state": this.state,
+            "discount": this.discount
           });
 
           var vm = this;
@@ -168,7 +174,8 @@ export default {
             "neighborhood": this.neighborhood,
             "city": this.city,
             "cep": this.cep,
-            "state": this.state
+            "state": this.state,
+            "discount": this.discount
           });
           
           var vm = this;                
