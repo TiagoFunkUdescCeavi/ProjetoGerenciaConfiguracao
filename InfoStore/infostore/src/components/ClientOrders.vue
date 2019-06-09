@@ -1,23 +1,14 @@
 <template>
   <v-card>
     <v-card-title>
-      <h1>Pedidos {{client}}</h1>    
+      <h1>Pedidos - {{client}}</h1>    
 
-      <v-spacer></v-spacer>
-      
-      <v-text-field
-        v-model="search"
-        append-icon="search"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+      <v-spacer></v-spacer>      
     </v-card-title>
     
     <v-data-table
       :headers="headers"
       :items="orders"
-      :search="search"
       :pagination.sync="pagination"        
       class="elevation-1"
      >      
@@ -30,7 +21,7 @@
             <v-btn icon >
               <v-icon>edit</v-icon>
             </v-btn>
-            <v-btn icon>
+            <v-btn icon @click="deleteOrder(orders.find(i => i === props.item))">
               <v-icon>delete</v-icon>
             </v-btn>
           </td>       
@@ -47,7 +38,6 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
-      search: '',
       headers: [
           { 
             text: 'Identificador', 
@@ -113,6 +103,25 @@ export default {
           console.log(error);
         });        
       }
+    },
+    deleteOrder(item){
+      var vm = this;
+      var data = {
+        "_id": item._id
+      }
+      fetch("http://localhost:3000/order/", {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify( data )
+      }).then(function(response){
+        if (response.ok){          
+          vm.fetchOrders();
+        }else{
+          console.log(response);
+        }
+      }).catch( function(error){
+        console.log(error);
+      });     
     }
   }
 }
