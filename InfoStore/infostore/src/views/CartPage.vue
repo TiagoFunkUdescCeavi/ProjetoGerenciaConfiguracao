@@ -19,10 +19,25 @@
           <td>{{props.item.quantity}}</td>
           <td>{{props.item.price}}</td>        
           <td>{{props.item.discount}}</td>
+          <td class="text-xs-center">
+            <v-btn icon @click="clickOrderEdit(cartProducts.find(i => i === props.item))">
+              <v-icon> 
+                edit
+              </v-icon>
+            </v-btn>
+            <v-btn icon @click="clickOrderDelete(cartProducts.find(i => i === props.item))">              
+              <v-icon >
+                delete
+              </v-icon>
+            </v-btn>
+          </td>       
         </tr>
       </template>
     </v-data-table>          
     <v-layout>
+      <v-flex md1>
+        <v-card-text>Valor Total: R${{totalValue}}</v-card-text>
+      </v-flex>
       <v-flex xs12 md4>
         <v-select
         v-model="selected"
@@ -38,6 +53,24 @@
         </v-btn>
       </v-flex>
     </v-layout>      
+    <v-snackbar
+      v-model="snackbar" 
+      :bottom="false"
+      :left="false"
+      :multi-line="true"
+      :right="false"
+      :timeout="5000"
+      :top="true"
+      :vertical="false">
+    {{snackText}}
+    <v-btn
+        color="pink"
+        flat
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-card>  
 </template>
 
@@ -50,7 +83,9 @@ export default {
             cartProducts: CartData.getProducts(),
             selected: null,
             clients: [],
-            totalValue: 0,
+            totalValue: this.getTotalValue(),
+            snackbar: false,
+            snackText: "",
             pagination:{
                 rowsPerPage: 10
             },
@@ -70,6 +105,12 @@ export default {
                 {
                     text: 'Desconto %',
                     value: 'discount'
+                },
+                {
+                  text: 'Opções',
+                  value: '_id',
+                  sortable: false,
+                  align: "center"
                 }
             ]
         }
@@ -85,9 +126,30 @@ export default {
           console.log(error);
         });
       },
+      getTotalValue(){
+        var total = 0;
+        var allProducts = CartData.getProducts();
+
+        function sumTotal(item){
+          total += item.price * item.quantity;
+        }
+
+        allProducts.forEach(sumTotal);
+
+        return total;
+      },
       salvar(){
-        if (!this.selected || this.cartProducts.length == 0)
+        if (!this.selected){
+          this.snackText = "Necessário selecionar um cliente!";
+          this.snackbar = true;
           return;
+        }
+
+        if (this.cartProducts.length == 0){
+          this.snackText = "Não há produtos no carrinho!";
+          this.snackbar = true;
+          return;
+        }
         
         const newOrder = {
           "client": this.selected,
@@ -105,12 +167,22 @@ export default {
               },
               method: "PUT",
               body: data
-          }).then(function(response) {            
+          }).then(function(response) {     
+              CartData.setProducts([]);
               vm.cartProducts = [];
+              vm.selected = null;
+              vm.totalValue = 0;
+              vm.snackText = "Pedido realizado com sucesso, você pode encontrá-lo na página de pedidos de cada cliente!";
+              vm.snackbar = true;
           }).catch(function(error) {
             console.log(error);
           });
+      },
+      clickOrderEdit(item){
 
+      },
+      clickOrderDelete(item){
+        
       }
     }
 }
