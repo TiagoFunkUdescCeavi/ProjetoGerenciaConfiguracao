@@ -207,7 +207,11 @@ export default {
         this.editFunc(item);
       },
       clickOrderDelete(item){
-
+        var index = this.cartProducts.indexOf(item);
+        if (index > -1){
+          this.cartProducts.splice(index, 1);          
+          this.totalValue = this.getTotalValue();
+        }
       }
     }
 }
