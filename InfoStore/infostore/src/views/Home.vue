@@ -29,6 +29,7 @@
         <tr>          
           <td>{{props.item.description}}</td>
           <td>{{props.item.manufacturer}}</td> 
+          <td>{{props.item.price}}</td> 
           <td class="text-xs-center">
             <v-btn icon @click="addProductToChart(products.find(i => i === props.item))">
               <v-icon>
@@ -75,6 +76,10 @@ export default {
           { 
             text: 'Fabricante', 
             value: 'manufacturer' 
+          },
+          {
+            text: "Valor Unitário",
+            value: "price"
           },
           {
             text: 'Opções',
@@ -147,8 +152,7 @@ export default {
         cartProducts.push({
           "product": item,
           "quantity": 1,
-          "price": 10,
-          "discount": 10
+          "discount": 0
           });
       else productData.quantity += 1;
 

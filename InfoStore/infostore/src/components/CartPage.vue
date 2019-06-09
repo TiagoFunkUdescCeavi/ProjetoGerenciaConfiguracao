@@ -17,7 +17,7 @@
         <tr>
           <td>{{props.item.product.description}}</td>
           <td>{{props.item.quantity}}</td>
-          <td>{{props.item.price}}</td>        
+          <td>{{props.item.product.price}}</td>        
           <td>{{props.item.discount}}</td>
           <td class="text-xs-center">
             <v-btn icon @click="clickOrderEdit(cartProducts.find(i => i === props.item))">
@@ -44,6 +44,7 @@
         :items="clients"
         item-text="name"
         label="Cliente"
+        v-on:change="changeClient"
         return-object
         ></v-select>
       </v-flex>      
@@ -136,6 +137,17 @@ export default {
       "OrderScreen": OrderScreen
     },
     methods: {
+      changeClient(client){
+        function changeDiscount(product){
+          if (client.discount)
+            product.discount = client.discount;
+          else product.discount = 0;
+        }
+
+        this.cartProducts.forEach(changeDiscount);
+
+        this.totalValue = this.getTotalValue();
+      },
       childCreated(childFunc){
         this.editFunc = childFunc;
       },
@@ -158,7 +170,7 @@ export default {
           allProducts = this.orderObj.products;
 
         function sumTotal(item){
-          var itemVal = item.price * item.quantity;
+          var itemVal = item.product.price * item.quantity;
           total += (itemVal * (1 - (item.discount / 100)));
         }
 

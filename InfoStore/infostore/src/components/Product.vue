@@ -12,7 +12,9 @@
           <v-flex xs12>
             <v-text-field label="Fabricante*" v-model="fabricante" required></v-text-field>
           </v-flex>              
-          
+          <v-flex xs12>
+            <v-text-field label="Preço" v-model="price" type="number" prefix="R$" required></v-text-field>
+          </v-flex>          
         </v-layout>
       </v-container>
       <small>*Indica campos obrigatórios</small>
@@ -50,6 +52,7 @@ export default {
         registered: false,        
         descricao: "",
         fabricante: "",
+        price: 0,
         snackbar: false,
         text: "",
         itemObject: Object,
@@ -70,6 +73,7 @@ export default {
           if (this.itemObject) {
             this.descricao = this.itemObject.description;
             this.fabricante = this.itemObject.manufacturer;
+            this.price = this.itemObject.price;
           }
         },
         close() {
@@ -82,6 +86,7 @@ export default {
         clean() {          
           this.descricao = "";
           this.fabricante = "";                       
+          this.price = 0;
         },     
         iconClick() {
           this.registered = false; 
@@ -90,7 +95,8 @@ export default {
           let data = {
             "_id": this.itemObject._id,
             "description": this.descricao,
-            "manufacturer": this.fabricante
+            "manufacturer": this.fabricante,
+            "price": this.price
           }
           data = JSON.stringify(data);          
           var vm = this;
@@ -120,7 +126,8 @@ export default {
         saveItem(){
           let data = {
             "description": this.descricao,
-            "manufacturer": this.fabricante
+            "manufacturer": this.fabricante,
+            "price": this.price
           };
 
           data = JSON.stringify( data );

@@ -30,7 +30,8 @@ router.get('/', async(req, res) => {
 router.post("/",async function(req,res){  
   var newData = {
     "description": req.body.description,
-    "manufacturer": req.body.manufacturer
+    "manufacturer": req.body.manufacturer,
+    "price": req.body.price
   }
   
   var products = mongoose.model('Product');

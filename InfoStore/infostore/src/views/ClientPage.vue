@@ -35,6 +35,7 @@
           <td>{{props.item.city}}</td>
           <td>{{props.item.cep}}</td>
           <td>{{props.item.state}}</td>
+          <td>{{props.item.discount}}</td>
           <td class="text-xs-center">
             <v-btn icon @click="showOrders(clients.find(i => i === props.item))">
               <v-icon> 
@@ -110,6 +111,10 @@ export default {
                 { 
                     text: 'Estado', 
                     value: 'state' 
+                },
+                {
+                  text: "Desconto %",
+                  value: "discount"
                 },
                 {
                     text: 'Opções',

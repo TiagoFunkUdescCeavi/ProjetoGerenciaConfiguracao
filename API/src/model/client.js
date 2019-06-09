@@ -24,6 +24,9 @@ const ClientSchema = mongoose.Schema({
     },
     state:{
         type: String,
+    },
+    discount:{
+        type: Number
     }
 });
 
