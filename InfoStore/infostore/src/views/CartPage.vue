@@ -154,8 +154,8 @@ export default {
         var allProducts = CartData.getProducts();
 
         function sumTotal(item){
-          console.log(item.price * item.quantity);
-          total += item.price * item.quantity;
+          var itemVal = item.price * item.quantity;
+          total += (itemVal * (1 - (item.discount / 100)));
         }
 
         allProducts.forEach(sumTotal);
