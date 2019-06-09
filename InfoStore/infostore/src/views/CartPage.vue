@@ -35,7 +35,7 @@
       </template>
     </v-data-table>          
     <v-layout>
-      <v-flex md1>
+      <v-flex md2>
         <v-card-text>Valor Total: R${{totalValue}}</v-card-text>
       </v-flex>
       <v-flex xs12 md4>
@@ -71,11 +71,18 @@
         Close
       </v-btn>
     </v-snackbar>
+    <v-dialog v-model="dialog" persistent max-width="800">
+      <OrderScreen 
+        v-on:OnCloseOrderScreen="closeOrderScreen"
+        v-on:updateOrderItem='childCreated'>
+      </OrderScreen>
+    </v-dialog>    
   </v-card>  
 </template>
 
 <script>
 import CartData from '../data/CartData';
+import OrderScreen from '../components/Order'
 import { log } from 'util';
 export default {
     data(){
@@ -86,25 +93,31 @@ export default {
             totalValue: this.getTotalValue(),
             snackbar: false,
             snackText: "",
+            dialog: false,
+            editFunc: Function,
             pagination:{
                 rowsPerPage: 10
             },
             headers:[
                 {
                     text: 'Produto',
-                    value: 'description'
+                    value: 'description',
+                    sortable: false
                 },
                 {
                     text: 'Quantidade',
-                    value: 'quantity'
+                    value: 'quantity',
+                    sortable: false
                 },
                 {
                     text: 'Valor Unitário',
-                    value: 'price'
+                    value: 'price',
+                    sortable: false
                 },
                 {
                     text: 'Desconto %',
-                    value: 'discount'
+                    value: 'discount',
+                    sortable: false
                 },
                 {
                   text: 'Opções',
@@ -118,7 +131,17 @@ export default {
     mounted(){
       this.fetchClients();
     },
+    components:{
+      "OrderScreen": OrderScreen
+    },
     methods: {
+      childCreated(childFunc){
+        this.editFunc = childFunc;
+      },
+      closeOrderScreen(){
+        this.dialog = false;
+        this.totalValue = this.getTotalValue();
+      },
       fetchClients(){
         fetch("http://localhost:3000/client/").then(response => response.json()).then(data => {              
           this.clients = data;
@@ -131,6 +154,7 @@ export default {
         var allProducts = CartData.getProducts();
 
         function sumTotal(item){
+          console.log(item.price * item.quantity);
           total += item.price * item.quantity;
         }
 
@@ -179,10 +203,11 @@ export default {
           });
       },
       clickOrderEdit(item){
-
+        this.dialog = true;
+        this.editFunc(item);
       },
       clickOrderDelete(item){
-        
+
       }
     }
 }
