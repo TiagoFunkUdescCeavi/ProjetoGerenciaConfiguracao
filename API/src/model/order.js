@@ -9,8 +9,7 @@ const SaleItem = mongoose.Schema({
 
 const OrderSchema = mongoose.Schema({
     client: {},
-    products: [ SaleItem ],
-    totalValue:{ type: Number },
+    products: [ SaleItem ]
 });
 
 const Order = mongoose.model('Order', OrderSchema);

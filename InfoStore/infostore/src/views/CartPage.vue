@@ -1,5 +1,5 @@
 <template>
-<v-card>
+  <v-card>
     <v-card-title>
       <h1>Carrinho</h1>    
                    
@@ -17,22 +17,27 @@
         <tr>
           <td>{{props.item.product.description}}</td>
           <td>{{props.item.quantity}}</td>
-          <td>{{props.item.value}}</td>        
+          <td>{{props.item.price}}</td>        
           <td>{{props.item.discount}}</td>
         </tr>
       </template>
-    </v-data-table>        
-    <v-flex xs12>
-        <v-combobox
-          v-model="select"
-          :items="clients"
-          chips
-          label="Cliente"
-        ></v-combobox>
+    </v-data-table>          
+    <v-layout>
+      <v-flex xs12 md4>
+        <v-select
+        v-model="selected"
+        :items="clients"
+        item-text="name"
+        label="Cliente"
+        return-object
+        ></v-select>
+      </v-flex>      
+      <v-flex xs12 md4>
+        <v-btn @click="salvar">
+          Finalizar Pedido
+        </v-btn>
       </v-flex>
-    <v-btn @click="salvar">
-      Finalizar Pedido
-    </v-btn>    
+    </v-layout>      
   </v-card>  
 </template>
 
@@ -43,9 +48,9 @@ export default {
     data(){
         return {
             cartProducts: CartData.getProducts(),
-            select: '',
+            selected: null,
             clients: [],
-            totalValue: 10,
+            totalValue: 0,
             pagination:{
                 rowsPerPage: 10
             },
@@ -60,7 +65,7 @@ export default {
                 },
                 {
                     text: 'Valor Unitário',
-                    value: 'value'
+                    value: 'price'
                 },
                 {
                     text: 'Desconto %',
@@ -75,23 +80,20 @@ export default {
     methods: {
       fetchClients(){
         fetch("http://localhost:3000/client/").then(response => response.json()).then(data => {              
-          
-          data.array.forEach(element => {
-            this.clients.push(element.name);
-          });
+          this.clients = data;
         }).catch(function(error){
           console.log(error);
         });
       },
       salvar(){
-        if( this.cartProducts.length == 0 ){
-          console.log( "Vazio" );
+        if (!this.selected || this.cartProducts.length == 0)
           return;
-        }
+        
         const newOrder = {
-          "products" : this.cartProducts,
-          "totalValue": this.totalValue
+          "client": this.selected,
+          "products": this.cartProducts
         };
+
         const data = JSON.stringify( newOrder );
 
         var vm = this;
